@@ -1,21 +1,33 @@
 #pragma once 
 #include <vector>
-
+#include <random>
+#include <cmath>
 class Particle{
     public:
-        double p_mass; //in grams 
-        double p_radius; // in mm
-        std::vector<double> p_position; // in mm
-        std::vector<double> p_velocity; // in mm/s
-        std::vector<double> p_acceleration; // in mm/s^2
+        double p_mass; 
+        // double p_radius;
+        std::vector<double> p_position; 
+        std::vector<double> p_velocity; 
+        std::vector<double> p_acceleration; 
 
-        Particle(const double& mass, const double& radius,
+        Particle(const double& mass,
                  const std::vector<double>& position,     
                  const std::vector<double>& velocity,
                  const std::vector<double>& acceleration) : 
-                 p_mass{mass},p_radius{radius},p_position{position},p_velocity{velocity}, p_acceleration{acceleration}{}
+                 p_mass{mass},p_position{position},p_velocity{velocity}, p_acceleration{acceleration}{}
         
 };
+
+void gaussianVelocityDistribution(std::vector<double>& velocity, const double T,std::mt19937& generator){
+   
+    const double mean = 0.0; //mean velocity is zero 
+    const double stddev = std::sqrt(T); //since we are using reduced units, only T is necessary
+    std::normal_distribution<double> gaussian(mean,stddev);
+    velocity[0] = gaussian(generator);
+    velocity[1] = gaussian(generator);
+    velocity[2] = gaussian(generator);
+    
+}
 
 inline void updatePositionVelocityFirstHalf(std::vector<Particle>& particles, double deltaTime){
     int n = particles.size();

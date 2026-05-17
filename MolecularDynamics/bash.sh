@@ -1,12 +1,8 @@
-rm -rf vtufiles/
-cd src
-rm *.vtu *.pvd 
-rm main
-g++ --std=c++20 -o particleSim particleSim.cpp
+rm -r -f out_base/
+mkdir -p out_base/
 
-./particleSim > out.txt
-
-tar -cvf particle.tar.gz *.vtu *.pvd
-mkdir ../vtufiles
-mv *.vtu *.pvd ../vtufiles/
-mv *.tar.gz ../
+make base
+rm -f particle_base.tar.gz
+tar -cvf particle_base.tar.gz *.vtu *.pvd
+rm -r *.vtu *.pvd 
+rm -r -f out_base/

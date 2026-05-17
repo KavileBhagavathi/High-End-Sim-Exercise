@@ -32,7 +32,6 @@ void createNeighbourList(std::vector<int>& cells_arr, std::vector<int>& neigh_pa
         
         neigh_particles_arr[i] = cells_arr[c];
         cells_arr[c] = i;
-        std::cout<<"Cell: "<<c<<", Particle: "<<i<<"\n";
     }
 }
 
@@ -74,7 +73,7 @@ void LennardJones(Domain& domain, std::vector<int>& cells_arr, std::vector<int>&
                                                         pow(particles[particle_idx].p_position[2]-particles[neighbhour_cell_particle_idx].p_position[2],2);
                                     if (xij_sqrd<domain.rad_cutoff*domain.rad_cutoff){
                                         double sigma_xij_powsix = pow(domain.sigma,6)/ pow(xij_sqrd,3);
-                                        double multiplier = 24*domain.epsilon*sigma_xij_powsix*(2*sigma_xij_powsix-1)*(1.0/xij_sqrd);
+                                        double multiplier = 24.0*domain.epsilon*sigma_xij_powsix*(2.0*sigma_xij_powsix-1)*(1.0/xij_sqrd);
                                         for (auto f=0; f<3;++f){
                                             Force[f] += multiplier*(particles[particle_idx].p_position[f]-particles[neighbhour_cell_particle_idx].p_position[f]); 
                                         }

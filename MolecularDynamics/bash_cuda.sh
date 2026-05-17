@@ -1,12 +1,8 @@
-# rm -rf vtufiles/
-# cd src_cuda
-# rm *.vtu *.pvd 
-# rm main
-# nvcc -O3 --std=c++20 -o main main.cu
+rm -r -f out_cuda/
+mkdir -p out_cuda/
 
-# ./main
-
-# tar -cvf particle.tar.gz *.vtu *.pvd
-# mkdir ../vtufiles
-# mv *.vtu *.pvd ../vtufiles/
-# mv *.tar.gz ../
+make cuda
+rm -f particle_cuda.tar.gz
+tar -cvf particle_cuda.tar.gz *.vtu *.pvd
+rm -r *.vtu *.pvd 
+rm -r -f out_cuda/

@@ -31,17 +31,3 @@ bool checkOverlap(const std::vector<Particle>& p_arr,
     }
     return true;
 }
-
-std::vector<double> randVec(const double min, const double max){
-    std::random_device rd; // obtain a random number from hardware
-    std::mt19937 gen(rd()); // seed the generator
-    std::uniform_int_distribution<> distr(min, max); // define the range
-    //std::cout<<"Random num is: "<<distr(gen)<<"\n";
-    std::vector<double> vec;
-    for (int i=0; i<3; ++i){
-        double randNum = (double)distr(gen)/1.0;
-        vec.push_back(randNum);
-        // std::cout<<vec[i]<<",";
-    }
-    return vec;
-}
