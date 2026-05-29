@@ -24,6 +24,7 @@ This directory contains both the CPU version and the CUDA accelerated versions o
 * The executables can be found in the build directory
 
 ### The Result
+The following image was obtained using c = -0.8 + 0.15i
 ![c=-0.8+0.15i](./-0.800000+0.156000i.png)
 
 ## Authors
