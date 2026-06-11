@@ -2,6 +2,8 @@
 #include "domain.h"
 
 struct ParticleSystem{
+    double radius;
+    double mass;
     double* pos;
     double* vel;
     double* acc;

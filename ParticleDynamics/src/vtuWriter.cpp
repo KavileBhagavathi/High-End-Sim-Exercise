@@ -29,3 +29,4 @@ void writeVTU(const std::string& filename, const double* pos, int N, double radi
     f << "  </UnstructuredGrid>\n";
     f << "</VTKFile>\n";
 }
+

@@ -18,7 +18,10 @@ void initializeParticleSystem(const Domain& domain, ParticleSystem& host_ps){
     std::mt19937 generator(21);
     const double stddev = std::sqrt(domain.T);
     std::normal_distribution<double> guassianDistr(0.0,stddev);
-
+    
+    host_ps.radius = 0.1;
+    host_ps.mass = 1.0;
+    
     int idx = 0.0;
     for (int k=0; k<domain.n_particles_z; ++k){
         for (int j=0; j<domain.n_particles_y; ++j){
