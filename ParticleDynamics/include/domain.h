@@ -1,10 +1,13 @@
+#pragma once
 #include <string>
+
 struct Domain{
     int dimension;
 
     int n_particles_x;
     int n_particles_y;
     int n_particles_z;
+    int n_particles_total;
 
     double box_len_x;
     double box_len_y;
@@ -15,7 +18,7 @@ struct Domain{
     int n_cells_z;
     int n_cells_total;
 
-    double delta_x;
+    double delta_x, delta_y, delta_z;
     double rad_cutoff;
     double sigma;
     double epsilon;
@@ -23,5 +26,9 @@ struct Domain{
     double endTime; 
     double T; //temperature
 
-    std::string bc;
+    bool gravityEnabled;
+    bool periodicBC;
 };
+
+void domainParamInitialization(Domain& domain);
+void domainBoxInitialization(Domain& domain);

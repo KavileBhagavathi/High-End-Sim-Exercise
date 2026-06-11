@@ -1,5 +1,6 @@
-#include "kernels.cuh"
 #include <cuda_runtime.h>
+#include "kernels.cuh"
+#include "domain.h"
 
 __global__ void updatePosVelFirstHalfKernel(const Domain domain, double* pos,
                                                                     double* vel,
@@ -15,16 +16,18 @@ __global__ void updatePosVelFirstHalfKernel(const Domain domain, double* pos,
     vel[3*idx+1] += acc[3*idx+1]*dt*0.5;
     vel[3*idx+2] += acc[3*idx+2]*dt*0.5;  
 
-    if (domain.bc == "periodic"){
-            if (pos[3*idx+0]<0.0) pos[3*idx+0] += box_len_x; 
-            if (pos[3*idx+0]>=box_len) pos[3*idx+0] -= box_len_x; 
-            if (pos[3*idx+1]<0.0) pos[3*idx+1] += box_len_y; 
-            if (pos[3*idx+1]>=box_len) pos[3*idx+1] -= box_len_y;
-            if (pos[3*idx+2]<0.0) pos[3*idx+2] += box_len_z; 
-            if (pos[3*idx+2]>=box_len) pos[3*idx+2] -= box_len_z;
+    if (domain.periodicBC){
+            if (pos[3*idx+0]<0.0) pos[3*idx+0] += domain.box_len_x; 
+            if (pos[3*idx+0]>=domain.box_len_x) pos[3*idx+0] -= domain.box_len_x; 
+            if (pos[3*idx+1]<0.0) pos[3*idx+1] += domain.box_len_y; 
+            if (pos[3*idx+1]>=domain.box_len_y) pos[3*idx+1] -= domain.box_len_y;
+            if (pos[3*idx+2]<0.0) pos[3*idx+2] += domain.box_len_z; 
+            if (pos[3*idx+2]>=domain.box_len_z) pos[3*idx+2] -= domain.box_len_z;
     }
 }
 
 void launchUpdatePosVelFirstHalfKernel(const Domain& domain, ParticleSystem& device_ps,int blocks, int threads){
     updatePosVelFirstHalfKernel<<<blocks,threads>>>(domain,device_ps.pos,device_ps.vel,device_ps.acc);
+    checkCudaError(cudaGetLastError());
+    checkCudaError(cudaDeviceSynchronize());
 }
