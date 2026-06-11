@@ -1,0 +1,263 @@
+### Starting TaskPrologue of job 3717244 on a1621 at Thu Jun 11 10:11:59 AM CEST 2026
+Running on cores 32-47 with governor performance
+Thu Jun 11 10:11:59 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 610.43.02              KMD Version: 610.43.02     CUDA UMD Version: 13.3     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A40                     On  |   00000000:41:00.0 Off |                  Off |
+|  0%   35C    P8             21W /  300W |       0MiB /  49140MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+### Finished TaskPrologue
+
+mkdir -p ./build/particleSim
+nvcc -O3 -std=c++17 -arch=sm_86  src_cuda/particleSim.cu -o ./build/particleSim/particleSim-cuda
+Cuda:
+./build/particleSim/particleSim-cuda 
+Box len: 30
+Domain dimension: 3
+Num cells total: 1728
+Num cells x: 12
+Num of particles in x: 10
+Num of total particles: 1000
+Num of threads in x: 8, y: 8, z: 8
+Num of blocks in x: 2, y: 2, z: 2
+Program exited without errors
+
+particle_0.vtu
+particle_100.vtu
+particle_101.vtu
+particle_102.vtu
+particle_103.vtu
+particle_104.vtu
+particle_105.vtu
+particle_106.vtu
+particle_107.vtu
+particle_108.vtu
+particle_109.vtu
+particle_10.vtu
+particle_110.vtu
+particle_111.vtu
+particle_112.vtu
+particle_113.vtu
+particle_114.vtu
+particle_115.vtu
+particle_116.vtu
+particle_117.vtu
+particle_118.vtu
+particle_119.vtu
+particle_11.vtu
+particle_120.vtu
+particle_121.vtu
+particle_122.vtu
+particle_123.vtu
+particle_124.vtu
+particle_125.vtu
+particle_126.vtu
+particle_127.vtu
+particle_128.vtu
+particle_129.vtu
+particle_12.vtu
+particle_130.vtu
+particle_131.vtu
+particle_132.vtu
+particle_133.vtu
+particle_134.vtu
+particle_135.vtu
+particle_136.vtu
+particle_137.vtu
+particle_138.vtu
+particle_139.vtu
+particle_13.vtu
+particle_140.vtu
+particle_141.vtu
+particle_142.vtu
+particle_143.vtu
+particle_144.vtu
+particle_145.vtu
+particle_146.vtu
+particle_147.vtu
+particle_148.vtu
+particle_149.vtu
+particle_14.vtu
+particle_150.vtu
+particle_151.vtu
+particle_152.vtu
+particle_153.vtu
+particle_154.vtu
+particle_155.vtu
+particle_156.vtu
+particle_157.vtu
+particle_158.vtu
+particle_159.vtu
+particle_15.vtu
+particle_160.vtu
+particle_161.vtu
+particle_162.vtu
+particle_163.vtu
+particle_164.vtu
+particle_165.vtu
+particle_166.vtu
+particle_167.vtu
+particle_168.vtu
+particle_169.vtu
+particle_16.vtu
+particle_170.vtu
+particle_171.vtu
+particle_172.vtu
+particle_173.vtu
+particle_174.vtu
+particle_175.vtu
+particle_176.vtu
+particle_177.vtu
+particle_178.vtu
+particle_179.vtu
+particle_17.vtu
+particle_180.vtu
+particle_181.vtu
+particle_182.vtu
+particle_183.vtu
+particle_184.vtu
+particle_185.vtu
+particle_186.vtu
+particle_187.vtu
+particle_188.vtu
+particle_189.vtu
+particle_18.vtu
+particle_190.vtu
+particle_191.vtu
+particle_192.vtu
+particle_193.vtu
+particle_194.vtu
+particle_195.vtu
+particle_196.vtu
+particle_197.vtu
+particle_198.vtu
+particle_199.vtu
+particle_19.vtu
+particle_1.vtu
+particle_200.vtu
+particle_20.vtu
+particle_21.vtu
+particle_22.vtu
+particle_23.vtu
+particle_24.vtu
+particle_25.vtu
+particle_26.vtu
+particle_27.vtu
+particle_28.vtu
+particle_29.vtu
+particle_2.vtu
+particle_30.vtu
+particle_31.vtu
+particle_32.vtu
+particle_33.vtu
+particle_34.vtu
+particle_35.vtu
+particle_36.vtu
+particle_37.vtu
+particle_38.vtu
+particle_39.vtu
+particle_3.vtu
+particle_40.vtu
+particle_41.vtu
+particle_42.vtu
+particle_43.vtu
+particle_44.vtu
+particle_45.vtu
+particle_46.vtu
+particle_47.vtu
+particle_48.vtu
+particle_49.vtu
+particle_4.vtu
+particle_50.vtu
+particle_51.vtu
+particle_52.vtu
+particle_53.vtu
+particle_54.vtu
+particle_55.vtu
+particle_56.vtu
+particle_57.vtu
+particle_58.vtu
+particle_59.vtu
+particle_5.vtu
+particle_60.vtu
+particle_61.vtu
+particle_62.vtu
+particle_63.vtu
+particle_64.vtu
+particle_65.vtu
+particle_66.vtu
+particle_67.vtu
+particle_68.vtu
+particle_69.vtu
+particle_6.vtu
+particle_70.vtu
+particle_71.vtu
+particle_72.vtu
+particle_73.vtu
+particle_74.vtu
+particle_75.vtu
+particle_76.vtu
+particle_77.vtu
+particle_78.vtu
+particle_79.vtu
+particle_7.vtu
+particle_80.vtu
+particle_81.vtu
+particle_82.vtu
+particle_83.vtu
+particle_84.vtu
+particle_85.vtu
+particle_86.vtu
+particle_87.vtu
+particle_88.vtu
+particle_89.vtu
+particle_8.vtu
+particle_90.vtu
+particle_91.vtu
+particle_92.vtu
+particle_93.vtu
+particle_94.vtu
+particle_95.vtu
+particle_96.vtu
+particle_97.vtu
+particle_98.vtu
+particle_99.vtu
+particle_9.vtu
+particles.pvd
+=== JOB_STATISTICS ===
+=== current date     : Thu Jun 11 10:12:05 CEST 2026
+= Job-ID             : 3717244 on alex
+= Job-Name           : bash_hpc.sh
+= Job-Command        : /home/hpc/hesp/hesp170v/High-End-Sim-Exercise/MolecularDynamics/bash_hpc.sh
+= Initial workdir    : /home/hpc/hesp/hesp170v/High-End-Sim-Exercise/MolecularDynamics
+= Queue/Partition    : a40
+= Slurm account      : hesp with QOS=normal
+= Features           : el9
+= Requested resources:  for 01:00:00
+= Elapsed runtime    : 00:00:07
+= Total RAM usage    : 0.4 GiB of assigned  GiB (%)
+= Node list          : a1621
+= Subm/Elig/Start/End: 2026-06-11T10:11:57 / 2026-06-11T10:11:57 / 2026-06-11T10:11:58 / 2026-06-11T10:12:05
+======================
+=== Quota infos ======
+    Path                 Used     SoftQ    HardQ    Gracetime  Filec    FileQ    FiHaQ    FileGrace    
+    /home/woody             0.0K  1000.0G  1500.0G        N/A       1    5,000K   7,500K        N/A    
+    /home/hpc            1313.0M   104.9G   209.7G        N/A   3,117      500K   1,000K        N/A    
+======================
+=== GPU utilization ==
+gpu_name, gpu_bus_id, pid, gpu_utilization [%], mem_utilization [%], max_memory_usage [MiB], time [ms]
+NVIDIA A40, 00000000:41:00.0, 143743, 1 %, 0 %, 266 MiB, 1431 ms

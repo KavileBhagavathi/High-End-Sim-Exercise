@@ -5,6 +5,7 @@
 #include <cuda_runtime.h>
 #include <curand.h>
 #include <curand_kernel.h>
+#include "util.h"
 #include "domain.h"
 #include "cudautils.h"
 #include "vtuWriter.h"
@@ -58,21 +59,22 @@ void domainInitialization(Domain& domain){
         domain.n_particles_total = domain.n_particles_x*domain.n_particles_x*domain.n_particles_x;
         domain.n_particles_y = domain.n_particles_z = domain.n_particles_x;
     }
-    domain.delta_x = domain.rad_cutoff;
-    double box_len = (double)(domain.n_particles_x)*domain.delta_x; //assuming equidistant distribution in all directions
-    std::cout<<"Box len: "<<box_len<<"\n";
-    domain.n_cells_x = (int)std::ceil(box_len/domain.rad_cutoff);
+    domain.delta_x = 1.2*domain.rad_cutoff;
+    domain.box_len = (double)(domain.n_particles_x)*domain.delta_x; //assuming equidistant distribution in all directions
+    std::cout<<"Box len: "<<domain.box_len<<"\n";
+    domain.n_cells_x = (int)std::ceil(domain.box_len/domain.rad_cutoff);
 
     if (domain.domainDimension==1) domain.n_cells_total = domain.n_cells_x;
     else if (domain.domainDimension==2) domain.n_cells_total = pow(domain.n_cells_x,2);
     else domain.n_cells_total = pow(domain.n_cells_x,3);
 }
 
+
+
 int main(){
 
     Domain domain;
     domainInitialization(domain);
-
 
     //host arrays
     double* h_position = new double[3*domain.n_particles_total](); //multiplied by three since particle is in Cartesian space
@@ -85,12 +87,6 @@ int main(){
     double* d_acceleration = nullptr;   
     GpuLaunchConfig config = getLaunchConfig(domain);
     
-    // cudaDeviceProp prop;
-    // cudaGetDeviceProperties(&prop, 0);
-    // std::cout << "Max threads per block: " << prop.maxThreadsPerBlock << "\n";
-    // std::cout << "Max threads per SM: " << prop.maxThreadsPerMultiProcessor << "\n";
-    // std::cout << "Max grid size X: " << prop.maxGridSize[0] << "\n";
-
     //allocate device memory and copy to device
     checkCudaError(cudaMalloc(&d_position, 3*domain.n_particles_total*sizeof(double)));
     checkCudaError(cudaMalloc(&d_velocity, 3*domain.n_particles_total*sizeof(double)));
@@ -98,13 +94,15 @@ int main(){
     
     curandState* d_states;
     checkCudaError(cudaMalloc(&d_states,sizeof(curandState)*domain.n_particles_total));
-    
     initCurandStates<<<config.blocks,config.threads>>>(d_states,domain);
     cudaDeviceSynchronize();
+
     generateParticles<<<config.blocks,config.threads>>>(domain,d_position,d_velocity,d_acceleration);
     cudaDeviceSynchronize();
     
     gaussianVelocityDistribution<<<config.blocks,config.threads>>>(d_states,d_velocity,domain);
+    cudaDeviceSynchronize();
+
     checkCudaError(cudaMemcpy(h_position,d_position,3*domain.n_particles_total*sizeof(double),cudaMemcpyDeviceToHost));
     checkCudaError(cudaGetLastError());
     
@@ -129,16 +127,15 @@ int main(){
     int* d_particles_arr = nullptr;
     checkCudaError(cudaMalloc(&d_cells_arr,sizeof(int)*domain.n_cells_total));
     checkCudaError(cudaMalloc(&d_particles_arr,sizeof(int)*domain.n_particles_total));
-    checkCudaError(cudaMemcpy(d_cells_arr,h_cells_arr,sizeof(int)*domain.n_cells_total,cudaMemcpyHostToDevice));
-    checkCudaError(cudaMemcpy(d_particles_arr,h_particles_arr,sizeof(int)*domain.n_particles_total,cudaMemcpyHostToDevice));
-    
-    std::ofstream pvd("particles.pvd");
-    pvd << "<?xml version=\"1.0\"?>\n";
-    pvd << "<VTKFile type=\"Collection\" version=\"0.1\">\n";
-    pvd << "  <Collection>\n";
-    std::string fname = "particle_"+std::to_string(0)+".vtu";
-    // writeVTU(fname,h_position,domain.n_particles_total,p_radius);
+
     int count = 0;
+    std::ofstream pvd("particles.pvd");
+    std::string fname = "particle_"+std::to_string(0)+".vtu";
+    pvdInit(pvd);
+    writeVTU(fname,h_position,domain.n_particles_total,p_radius);
+    pvdWriteVTU(pvd,count,fname);
+    count++;
+    cudaDeviceSynchronize();
     // solver loop starts
     for (double it=domain.startTime; it<=domain.endTime; it += domain.deltaTime){
         cudaMemset(d_cells_arr, -1, domain.n_cells_total*sizeof(int));
@@ -156,13 +153,15 @@ int main(){
         checkCudaError(cudaGetLastError());
         
         checkCudaError(cudaMemcpy(h_position,d_position,3*domain.n_particles_total*sizeof(double),cudaMemcpyDeviceToHost));
+        cudaDeviceSynchronize();
         
         fname = "particle_"+std::to_string(count)+".vtu";
         writeVTU(fname,h_position,domain.n_particles_total,p_radius);
-        pvd<<"    <DataSet timestep=\"" << count << "\" file=\"" << fname << "\"/>\n";
+        pvdWriteVTU(pvd,count,fname);
         count++;
     }
-    pvd<<"    <DataSet timestep=\"" << count << "\" file=\"" << fname << "\"/>\n";
+    //writeVTU(fname,h_position,domain.n_particles_total,p_radius);
+    //pvd<<"    <DataSet timestep=\"" << count << "\" file=\"" << fname << "\"/>\n";
     
     checkCudaError(cudaFree(d_position));
     checkCudaError(cudaFree(d_velocity));

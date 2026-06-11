@@ -40,7 +40,7 @@ __global__ void LennardJones_VelocitySecondHalf(const Domain domain,
     const int tk = blockDim.z*blockIdx.z+threadIdx.z;
     if (ti>=domain.n_particles_x || tj>=domain.n_particles_y || tk>=domain.n_particles_z) return;
     int idx = ti + tj*domain.n_particles_x + tk*domain.n_particles_x*domain.n_particles_y;     
-          
+    double box_len = domain.box_len;
     acceleration[3*idx+0] = 0.0;
     acceleration[3*idx+1] = 0.0;
     acceleration[3*idx+2] = 0.0;
@@ -92,7 +92,13 @@ __global__ void LennardJones_VelocitySecondHalf(const Domain domain,
                         double dx_pos = px - position[3*neigh_cell_particle_idx+0];
                         double dy_pos = py - position[3*neigh_cell_particle_idx+1];
                         double dz_pos = pz - position[3*neigh_cell_particle_idx+2];
+                        if (dx_pos>box_len*0.5) dx_pos -= box_len;
+                        if (dy_pos>box_len*0.5) dy_pos -= box_len; 
+                        if (dz_pos>box_len*0.5) dz_pos -= box_len;
 
+                        if (dx_pos<=box_len*0.5) dx_pos += box_len;
+                        if (dy_pos<=box_len*0.5) dy_pos += box_len; 
+                        if (dz_pos<=box_len*0.5) dz_pos += box_len;
                         double xij_sqrd = dx_pos*dx_pos + dy_pos*dy_pos + dz_pos*dz_pos;
 
                         if (xij_sqrd<domain.rad_cutoff*domain.rad_cutoff){

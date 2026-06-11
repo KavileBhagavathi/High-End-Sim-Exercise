@@ -9,7 +9,7 @@ This directory contains both the CPU version and the CUDA accelerated versions o
 
 ### Environment
 
-* The benchmark was performed on the computer lab machines at Friedrich-Alexander-Universität, Erlangen and was part of the assessments of the High End Simulation in Practice course. The underlying machine specifications are mentioned below
+The benchmark was initially performed on the computer lab machines at Friedrich-Alexander-Universität, Erlangen and was part of the assessments of the High End Simulation in Practice course. The underlying machine specifications are mentioned below:
 * Operating System: Debian GNU/Linux 13 (trixie)
 * CPU: 12th Gen Intel(R) Core(TM) i7-12700
 * GPU: NVIDIA GeForce RTX 3070
@@ -17,13 +17,24 @@ This directory contains both the CPU version and the CUDA accelerated versions o
 * CUDA Compiler used: V13.2.51
 * Additional Info: No additional libraries or modules are required
 
-### Building & Running the program
+The later iterations of the code were tested on the Alex GPU-cluster part of [NHR@FAU](https://doc.nhr.fau.de/clusters/alex/).
+* Operating System: Debian GNU/Linux 13 (trixie)
+* CPU: AMD EPYC 7713 64-Core Processor
+* GPU: NVIDIA A40
+* Compiler used: gcc version 11.5.0 20240719 (Red Hat 11.5.0-11)
+* NVHPC version used: nvhpc/26.3
+
+Note: Change the GPU gencode in the [Makefile](./Makefile) to the code of your GPU before compiling and executing the code. 
+### Building & Running the program on local machine
 
 * To run the CPU version of the code: ```./bash.sh```
 * To run the GPU version of the code: ```./bash_cuda.sh```
 * In case the terminal returns "Permission denied" error, enter ```chmod +x ./bash.sh``` in the terminal and run again. 
 * The executables can be found in the build directory.
 * The output _.vtu_ and _.pvd_ files can be found in the respective _.tar.gz_ files (particle_base.tar.gz or particle_cuda.tar.gz) 
+
+### Building & Running the program on Alex Cluster
+* Use the provided shell scripts in cluster_shell to run the benchmark 
 
 ### Using PARAVIEW
 * To view the result in Paraview, download and extract the respective _.tar.gz_ file.

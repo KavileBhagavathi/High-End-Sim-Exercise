@@ -5,8 +5,8 @@ BUILD_DIR = ./build/$(TEST_CASE)
 
 # default benchmark parameters
 
-CUDA_ARCH = sm_86
-
+CUDA_ARCH = sm_86 #A40 
+#CUDA_ARCH = sm_80 #A100
 # all
 targets = $(BUILD_DIR)/$(TEST_CASE)-base $(BUILD_DIR)/$(TEST_CASE)-cuda
 
