@@ -19,6 +19,12 @@ void allocateDeviceMemory(const Domain& domain, NeighbourList& dev_nl){
     checkCudaError(cudaGetLastError());
 }   
 
+//overloaded function for allocating device memory for tot. kinetic energy
+void allocateDeviceMemory(Domain& domain){
+    cudaMalloc(&domain.total_ke, sizeof(double));
+    cudaCheckError(cudaGetLastError());
+}
+
 void freeDeviceMemory(ParticleSystem& dev_ps){
     cudaFree(dev_ps.pos);
     cudaFree(dev_ps.vel);
@@ -37,12 +43,28 @@ void freeDeviceMemory(NeighbourList& dev_nl){
     dev_nl.particles_arr = nullptr;
 }
 
+void freeDeviceMemory(Domain& domain){
+    cudaFree(domain.total_ke);
+    checkCudaError(cudaGetLastError());
+    domain.total_ke = nullptr;
+}
+
 void copyHostToDevice(const ParticleSystem& host_ps, ParticleSystem& dev_ps, const Domain& domain){
-    cudaMemcpy(dev_ps.pos,host_ps.pos,3*domain.n_particles_total*sizeof(double),cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_ps.pos, host_ps.pos, 3*domain.n_particles_total*sizeof(double),cudaMemcpyHostToDevice);
     checkCudaError(cudaGetLastError());
 }
 
 void copyDeviceToHost(const ParticleSystem& host_ps, ParticleSystem& dev_ps, const Domain& domain){
-    cudaMemcpy(host_ps.pos,dev_ps.pos,3*domain.n_particles_total*sizeof(double),cudaMemcpyDeviceToHost);
+    cudaMemcpy(host_ps.pos, dev_ps.pos, 3*domain.n_particles_total*sizeof(double),cudaMemcpyDeviceToHost);
+    checkCudaError(cudaGetLastError());
+}
+
+void copyHostToDevice(const Domain& host_domain, Domain& dev_domain){
+    cudaMemcpy(dev_domain.total_ke, host_domain.total_ke, sizeof(double), cudaMemcpyHostToDevice);
+    checkCudaError(cudaGetLastError());
+}
+
+void copyDeviceToHost(Domain& host_domain, const Domain& dev_domain){
+    cudaMemcpy(host_domain.total_ke, dev_domain.total_ke, sizeof(double), cudaMemcpyDeviceToHost);
     checkCudaError(cudaGetLastError());
 }
