@@ -28,6 +28,14 @@ void freeDeviceMemory(ParticleSystem& dev_ps){
     dev_ps.acc = nullptr;    
 }
 
+void freeDeviceMemory(NeighbourList& nl){
+    cudaFree(nl.cells_arr);
+    cudaFree(nl.particles_arr);
+    checkCudaError(cudaGetLastError());
+    nl.cells_arr = nullptr;
+    nl.particles_arr = nullptr;
+}
+
 void copyHostToDevice(const ParticleSystem& host_ps, ParticleSystem& dev_ps, const Domain& domain){
     cudaMemcpy(dev_ps.pos,host_ps.pos,3*domain.n_particles_total*sizeof(double),cudaMemcpyHostToDevice);
     checkCudaError(cudaGetLastError());
