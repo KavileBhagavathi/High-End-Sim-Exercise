@@ -12,7 +12,8 @@ add_executable(particlesim
     src/IO.cpp
     src/domain_init.cpp
     src/cuda/integrator.cu
-    src/cuda/particle_system.cu
+    src/cuda/memory_manager.cu
+    src/cuda/neigh_list.cu
 )
 target_compile_options(particlesim PRIVATE 
     $<$<COMPILE_LANGUAGE:CXX>:-march=native>
