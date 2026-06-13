@@ -79,7 +79,10 @@ __global__ void LennardJonesPotentialVelocitySeconfHalfKernel(const Domain domai
                 int neigh_particle_idx = cells_arr[neigh_cell_idx];
                 while (neigh_particle_idx!=-1){
                     if (neigh_particle_idx != idx){
-                        
+                        double dx_pos = px - pos[3*neigh_particle_idx+0];
+                        double dy_pos = py - pos[3*neigh_particle_idx+1];
+                        double dz_pos = pz - pos[3*neigh_particle_idx+2];
+
                     }
                 }
             }
